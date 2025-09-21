@@ -20,6 +20,20 @@ export default class NewBill {
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
+    
+    // Validação da extensão do arquivo
+    const allowedExtensions = ['jpg', 'jpeg', 'png']
+    const fileExtension = fileName.split('.').pop().toLowerCase()
+    
+    if (!allowedExtensions.includes(fileExtension)) {
+      // Limpar o input e mostrar erro
+      e.target.value = ''
+      alert('Veuillez sélectionner un fichier avec une extension valide (jpg, jpeg, png)')
+      this.fileUrl = null
+      this.fileName = null
+      return
+    }
+    
     const formData = new FormData()
     const email = JSON.parse(localStorage.getItem("user")).email
     formData.append('file', file)
